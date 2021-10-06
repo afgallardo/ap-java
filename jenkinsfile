@@ -21,7 +21,7 @@ pipeline{
 	stage('Generando Imagen de Contenedor'){
 	   steps{
 		sh 'echo "Generando Imagen de Contenedor"'
-		sh 'docker build -t imagen-prueba:2 .'
+		sh 'docker build -t imagen-prueba:3 .'
 	}}
  }
    post{	
