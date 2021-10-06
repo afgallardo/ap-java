@@ -1,0 +1,39 @@
+pipeline{
+   parameters{
+	choice(name: 'Nodo', choices: ['master','slave-1'], description: 'seleccione el nodo a utilizar')
+ }
+   agent{label "${params.Nodo}"}
+   stages{
+	stage('Clonando Proyecto desde el Repo'){
+	   steps{
+		sh 'echo "Clonando Proyecto desde el Repo"'
+		git url: 'https://github.com/afgallardo/test-java.git'
+	}}
+	stage('Compilando Codigo'){
+	   steps{
+		sh 'echo "Compilando Codigo"'
+		sh 'mvn clean install'
+	}}
+	stage('Probando Aplicacion'){
+	   steps{
+		sh 'echo "Probando Aplicacion"'
+	}}
+	stage('Generando Imagen de Contenedor'){
+	   steps{
+		sh 'echo "Generando Imagen de Contenedor"'
+		sh 'docker build -t imagen-prueba:2 .'
+	}}
+ }
+   post{	
+	always{
+		sh 'echo "Esto se ejecuta SIEMPRE"'
+	}
+	success{
+		sh 'echo "Esto se ejecuta ante un EXITO"'
+	}
+	failure{
+		sh 'echo "Esto se ejecuta ante una FALLA"'
+	}
+
+ }
+}
